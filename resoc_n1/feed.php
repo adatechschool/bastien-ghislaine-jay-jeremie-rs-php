@@ -87,29 +87,9 @@
             while ($post = $lesInformations->fetch_assoc()) {
 
             ?>
-                <article>
-                    <h3>
-                        <time><?php echo $post['created'] ?></time>
-                    </h3>
-                    <address>par <?php echo $post['author_name'] ?> </address>
-                    <div>
-                        <p>
-                            <?php echo $post['content'] ?>
-                        </p>
-                    </div>
-                    <footer>
-                        <small>
-                            ♥ <?php echo $post['like_number'] ?>
-                        </small>
-                        <?php
-                        $tagsArray = explode(',', $post['taglist']);
-                        while ($tag = current($tagsArray)) { ?>
-                            <a href=""><?php echo $tag ?></a>,
-                        <?php next($tagsArray);
-                        }
-                        ?>
-                    </footer>
-                </article>
+<?php
+        include 'post.php';
+        ?>
             <?php } ?>
 
         </main>
