@@ -53,6 +53,49 @@
         </aside>
         <main>
             <?php
+        $sessionId = $_SESSION['connected_id'];
+        echo "<pre>" . print_r($sessionId, 1) . "</pre>";
+        echo "<pre>" . print_r($userId, 1) . "</pre>";
+        if ($sessionId == $userId) {
+        $enCoursDeTraitement = isset($_POST['message']);
+                    if ($enCoursDeTraitement)
+                    {
+                        $authorId = $sessionId;
+                        $postContent = $_POST['message'];
+// petite sécurité
+                        $authorId = intval($mysqli->real_escape_string($authorId));
+                        $postContent = $mysqli->real_escape_string($postContent);
+                        //construction de la requete
+                        $lInstructionSql = "INSERT INTO posts "
+                                . "(id, user_id, content, created, parent_id) "
+                                . "VALUES (NULL, "
+                                . $authorId . ", "
+                                . "'" . $postContent . "', "
+                                . "NOW(), "
+                                // . "'', "
+                                . "NULL);"
+                                ;
+                        echo $lInstructionSql;
+                        // execution
+                        $ok = $mysqli->query($lInstructionSql);
+                        if ( ! $ok)
+                        {
+                            echo "Impossible d'ajouter le message: " . $mysqli->error;
+                        } 
+                    }
+                        ?>
+            <article>
+        <form action="wall.php?user_id=<?php echo $sessionId ?>" method="post">
+                        <input type='hidden' name='???' value='achanger'>
+                        <dl>
+                            <dt><label for='message'>Ecrivez votre post</label></dt>
+                            <dd><textarea name='message'></textarea></dd>
+                        </dl>
+                        <input type='submit'>
+                    </form>
+</article>      
+            <?php
+                    }
             /**
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
@@ -74,7 +117,7 @@
             }
 
             /**
-             * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+             * Etape 4: @todo Parcourir les messages et remplir correctement le HTML avec les bonnes valeurs php
              */
             while ($post = $lesInformations->fetch_assoc()) {
 
