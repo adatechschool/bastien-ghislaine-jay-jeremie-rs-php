@@ -53,39 +53,37 @@
         </aside>
         <main>
             <?php
-        $sessionId = $_SESSION['connected_id'];
-        // echo "<pre>" . print_r($sessionId, 1) . "</pre>";
-        // echo "<pre>" . print_r($userId, 1) . "</pre>";
-        if ($sessionId == $userId) {
-        $enCoursDeTraitement = isset($_POST['message']);
-                    if ($enCoursDeTraitement)
-                    {
-                        $authorId = $sessionId;
-                        $postContent = $_POST['message'];
-// petite sécurité
-                        $authorId = intval($mysqli->real_escape_string($authorId));
-                        $postContent = $mysqli->real_escape_string($postContent);
-                        //construction de la requete
-                        $lInstructionSql = "INSERT INTO posts "
-                                . "(id, user_id, content, created, parent_id) "
-                                . "VALUES (NULL, "
-                                . $authorId . ", "
-                                . "'" . $postContent . "', "
-                                . "NOW(), "
-                                // . "'', "
-                                . "NULL);"
-                                ;
-                        echo $lInstructionSql;
-                        // execution
-                        $ok = $mysqli->query($lInstructionSql);
-                        if ( ! $ok)
-                        {
-                            echo "Impossible d'ajouter le message: " . $mysqli->error;
-                        } 
+            $sessionId = $_SESSION['connected_id'];
+            // echo "<pre>" . print_r($sessionId, 1) . "</pre>";
+            // echo "<pre>" . print_r($userId, 1) . "</pre>";
+            if ($sessionId == $userId) {
+
+                $enCoursDeTraitement = isset($_POST['message']);
+                if ($enCoursDeTraitement) {
+                    $authorId = $sessionId;
+                    $postContent = $_POST['message'];
+                    // petite sécurité
+                    $authorId = intval($mysqli->real_escape_string($authorId));
+                    $postContent = $mysqli->real_escape_string($postContent);
+                    //construction de la requete
+                    $lInstructionSql = "INSERT INTO posts "
+                        . "(id, user_id, content, created, parent_id) "
+                        . "VALUES (NULL, "
+                        . $authorId . ", "
+                        . "'" . $postContent . "', "
+                        . "NOW(), "
+                        // . "'', "
+                        . "NULL);";
+                    echo $lInstructionSql;
+                    // execution
+                    $ok = $mysqli->query($lInstructionSql);
+                    if (!$ok) {
+                        echo "Impossible d'ajouter le message: " . $mysqli->error;
                     }
-                        ?>
-            <article>
-        <form action="wall.php?user_id=<?php echo $sessionId ?>" method="post">
+                }
+            ?>
+                <article>
+                    <form action="wall.php?user_id=<?php echo $sessionId ?>" method="post">
                         <input type='hidden' name='???' value='achanger'>
                         <dl>
                             <dt><label for='message'>Ecrivez votre post</label></dt>
@@ -93,9 +91,40 @@
                         </dl>
                         <input type='submit'>
                     </form>
-</article>      
+                </article>
             <?php
+            } elseif (($sessionId) && ($sessionId != $userId)) {
+
+                $enCoursDeTraitement = isset($_POST['suivre']);
+                if ($enCoursDeTraitement) {
+                    $userFollowedId = $userId;
+                    $userFollowingId = $sessionId;
+
+                    $userFollowedId = intval($mysqli->real_escape_string($userFollowedId));
+                    $userFollowingId = intval($mysqli->real_escape_string($userFollowingId));
+
+                    $lInstructionSql = "INSERT INTO followers"
+                        . "(id, followed_user_id, following_user_id) "
+                        . "VALUES (NULL, "
+                        . $userFollowedId . ", "
+                        . $userFollowingId . ");";
+                    echo $lInstructionSql;
+
+                    $ok = $mysqli->query($lInstructionSql);
+                    if (!$ok) {
+                        echo "Impossible de suivre cet utilisateur" . $mysqli->error;
                     }
+                }
+            ?>
+                <article>
+                    <form action="wall.php?user_id=<?php echo $userId ?>" method="post">
+                        <input type='hidden' name='suivre' value='true'>
+                        <input type='submit' value="Suivre">
+                    </form>
+                </article>
+
+            <?php
+            }
             /**
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
