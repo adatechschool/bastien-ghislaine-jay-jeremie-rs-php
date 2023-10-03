@@ -54,8 +54,8 @@
         <main>
             <?php
         $sessionId = $_SESSION['connected_id'];
-        echo "<pre>" . print_r($sessionId, 1) . "</pre>";
-        echo "<pre>" . print_r($userId, 1) . "</pre>";
+        // echo "<pre>" . print_r($sessionId, 1) . "</pre>";
+        // echo "<pre>" . print_r($userId, 1) . "</pre>";
         if ($sessionId == $userId) {
         $enCoursDeTraitement = isset($_POST['message']);
                     if ($enCoursDeTraitement)
