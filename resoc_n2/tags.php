@@ -61,7 +61,8 @@
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
-                    users.alias as author_name,  
+                    users.alias as author_name,
+                    users.id as author_id,    
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts_tags as filter 
@@ -86,9 +87,9 @@
 
                 //echo "<pre>" . print_r($post, 1) . "</pre>";
             ?>
-<?php
-        include 'post.php';
-        ?>
+                <?php
+                include 'post.php';
+                ?>
             <?php
                 // avec le <?php ci-dessus on retourne en mode php 
             } // cette accolade ferme et termine la boucle while ouverte avant.
