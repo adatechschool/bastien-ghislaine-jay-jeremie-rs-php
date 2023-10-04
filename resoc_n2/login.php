@@ -1,10 +1,17 @@
 <?php
 session_start();
-if (!isset($_SESSION['count'])) {
-    $_SESSION['count'] = 0;
-} else {
-    $_SESSION['count']++;
-}
+ if (isset($_SESSION['connected_id'])){
+    echo '<script>console.log("YES"); </script>';
+    echo '<script>console.log("'.$_SESSION['connected_id'].'"); </script>';
+ }else {
+    echo '<script>console.log("NO"); </script>';
+ }
+    
+// if (!isset($_SESSION['count'])) {
+//     $_SESSION['count'] = 0;
+// } else {
+//     $_SESSION['count']++;
+// }
 ?>
 <!doctype html>
 <html lang="fr">

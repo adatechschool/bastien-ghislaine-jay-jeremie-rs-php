@@ -59,6 +59,8 @@
             /**
              * Etape 3: récupérer tous les messages des abonnements
              */
+            if ($_SESSION['connected_id']){
+
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -90,7 +92,11 @@
                 <?php
                 include 'post.php';
                 ?>
-            <?php } ?>
+            <?php }
+            }else{
+                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+                <?php
+            }; ?>
 
         </main>
     </div>
