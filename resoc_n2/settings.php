@@ -1,3 +1,7 @@
+<?php 
+session_start();
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -28,6 +32,7 @@
         </aside>
         <main>
             <?php
+            if ($_SESSION['connected_id']){
             /**
              * Etape 1: Les paramètres concernent une utilisatrice en particulier
              * La première étape est donc de trouver quel est l'id de l'utilisatrice
@@ -85,6 +90,11 @@
                 </dl>
 
             </article>
+            <?php 
+        } else {
+                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+                <?php
+            }; ?>
         </main>
     </div>
 </body>

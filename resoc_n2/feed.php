@@ -93,7 +93,7 @@
                 include 'post.php';
                 ?>
             <?php }
-            }else{
+            } else {
                 ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
                 <?php
             }; ?>

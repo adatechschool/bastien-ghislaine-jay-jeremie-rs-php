@@ -29,6 +29,7 @@
         </aside>
         <main class='contacts'>
             <?php
+            if ($_SESSION['connected_id']){
             // Etape 1: récupérer l'id de l'utilisateur
             $userId = intval($_GET['user_id']);
             // Etape 2: se connecter à la base de donnée
@@ -51,6 +52,11 @@
                     <p>id:<?php echo $follower['id'] ?></p>
                 </article>
             <?php } ?>
+            <?php 
+        } else {
+                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+                <?php
+            }; ?>
         </main>
     </div>
 </body>

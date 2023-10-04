@@ -27,6 +27,7 @@
         </aside>
         <main class='contacts'>
             <?php
+            if ($_SESSION['connected_id']){
             // Etape 1: récupérer l'id de l'utilisateur
             $userId = intval($_GET['user_id']);
             // Etape 2: se connecter à la base de donnée
@@ -48,6 +49,11 @@
                 <h3>Béatrice</h3>
                 <p>id:321</p>
             </article>
+            <?php 
+        } else {
+                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+                <?php
+            }; ?>
         </main>
     </div>
 </body>
