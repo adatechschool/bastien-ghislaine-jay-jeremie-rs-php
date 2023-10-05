@@ -16,34 +16,23 @@
     </header>
     <div id="wrapper">
         <?php
-        /**
-         * Cette page est TRES similaire à wall.php. 
-         * Vous avez sensiblement à y faire la meme chose.
-         * Il y a un seul point qui change c'est la requete sql.
-         */
-        /**
-         * Etape 1: Le mur concerne un utilisateur en particulier
-         */
+
+        // recupère l'ID de l'utilisateur dont on regarde son mur
         $userId = intval($_GET['user_id']);
         ?>
+
         <?php
-        /**
-         * Etape 2: se connecter à la base de donnée
-         */
         include 'logingSQL.php';
         ?>
 
         <aside>
             <?php
-            /**
-             * Etape 3: récupérer le nom de l'utilisateur
-             */
+
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
-            //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
-            //echo "<pre>" . print_r($user, 1) . "</pre>";
             ?>
+
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>Présentation</h3>
@@ -56,12 +45,11 @@
         </aside>
         <main>
             <?php
-            /**
-             * Etape 3: récupérer tous les messages des abonnements
-             */
-            if ($_SESSION['connected_id']){
 
-            $laQuestionEnSql = "
+
+            if ($_SESSION['connected_id']) {
+
+                $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
                     users.alias as author_name,
@@ -78,24 +66,20 @@
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";
-            $lesInformations = $mysqli->query($laQuestionEnSql);
-            if (!$lesInformations) {
-                echo ("Échec de la requete : " . $mysqli->error);
-            }
+                $lesInformations = $mysqli->query($laQuestionEnSql);
+                if (!$lesInformations) {
+                    echo ("Échec de la requete : " . $mysqli->error);
+                }
 
-            /**
-             * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
-             * A vous de retrouver comment faire la boucle while de parcours...
-             */
-            while ($post = $lesInformations->fetch_assoc()) {
+                while ($post = $lesInformations->fetch_assoc()) {
             ?>
-                <?php
-                include 'post.php';
-                ?>
-            <?php }
+                    <?php
+                    include 'post.php';
+                    ?>
+                <?php }
             } else {
                 ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
-                <?php
+            <?php
             }; ?>
 
         </main>
