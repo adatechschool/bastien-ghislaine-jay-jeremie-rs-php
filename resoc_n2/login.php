@@ -1,12 +1,12 @@
 <?php
 session_start();
- if (isset($_SESSION['connected_id'])){
+if (isset($_SESSION['connected_id'])) {
     echo '<script>console.log("YES"); </script>';
-    echo '<script>console.log("'.$_SESSION['connected_id'].'"); </script>';
- }else {
+    echo '<script>console.log("' . $_SESSION['connected_id'] . '"); </script>';
+} else {
     echo '<script>console.log("NO"); </script>';
- }
-    
+}
+
 // if (!isset($_SESSION['count'])) {
 //     $_SESSION['count'] = 0;
 // } else {
@@ -20,7 +20,7 @@ session_start();
     <meta charset="utf-8">
     <title>ReSoC - Connexion</title>
     <meta name="author" content="Julien Falconnet">
-    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="style.css" /> -->
 </head>
 
 <body>
