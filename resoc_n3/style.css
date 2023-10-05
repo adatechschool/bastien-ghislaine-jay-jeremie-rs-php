@@ -1,6 +1,11 @@
 body{
-    background-color: #003;
+    /* background-color: #003; */
+    background-image: url("istockphoto-122204403-612x612.jpg");
+    background-size: cover;
     font-family: Arial;
+}
+main {
+    background-color: #003;
 }
 
 a{text-decoration: none; color:black;}
@@ -19,9 +24,13 @@ body>header img{
 }
 body>header #menu {
     display:flex;
-    width:50%;
+    width:85%;
     align-items: stretch;
     border-left: 1px solid #99b;
+}
+body>header #menu h1 {
+    text-align: center;
+    flex:4;
 }
 body>header #menu a{
     flex:1;
@@ -37,7 +46,7 @@ body>header ul{list-style: none;}
 body>header #user
 {
     margin-left: auto;
-    flex:0.2;
+    flex:1;
     border-left: 1px solid #99b;
 }
 body>header #user>a{
