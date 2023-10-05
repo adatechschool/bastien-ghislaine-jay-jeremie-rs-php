@@ -27,32 +27,31 @@
         </aside>
         <main class='contacts'>
             <?php
-            if ($_SESSION['connected_id']){
-            // Etape 1: récupérer l'id de l'utilisateur
-            $userId = intval($_GET['user_id']);
-            // Etape 2: se connecter à la base de donnée
-            include 'logingSQL.php';
-            // Etape 3: récupérer le nom de l'utilisateur
-            $laQuestionEnSql = "
+            if ($_SESSION['connected_id']) {
+                // Etape 1: récupérer l'id de l'utilisateur
+                $userId = intval($_GET['user_id']);
+                // Etape 2: se connecter à la base de donnée
+                include 'logingSQL.php';
+                // Etape 3: récupérer le nom de l'utilisateur
+                $laQuestionEnSql = "
                     SELECT users.*
                     FROM followers
                     LEFT JOIN users ON users.id=followers.following_user_id
                     WHERE followers.followed_user_id='$userId'
                     GROUP BY users.id
                     ";
-            $lesInformations = $mysqli->query($laQuestionEnSql);
-            // Etape 4: à vous de jouer
-            //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
+                $lesInformations = $mysqli->query($laQuestionEnSql);
+
             ?>
-            <article>
-                <img src="user.jpg" alt="blason" />
-                <h3>Béatrice</h3>
-                <p>id:321</p>
-            </article>
-            <?php 
-        } else {
-                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
-                <?php
+                <article>
+                    <img src="user.jpg" alt="blason" />
+                    <h3>Béatrice</h3>
+                    <p>id:321</p>
+                </article>
+            <?php
+            } else {
+            ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+            <?php
             }; ?>
         </main>
     </div>
