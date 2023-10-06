@@ -131,6 +131,7 @@ body>header #user:hover ul{
     float:left;
 }
 
+
 #wrapper.admin{flex-direction: row-reverse}
 #wrapper.admin aside{flex:1;margin-left:1em;border-radius:0;padding:0;}
 #wrapper.admin main{flex:2;background-color: #fff;border-radius: 0;padding:0;}

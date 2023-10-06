@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>ReSoC - Flux</title>
     <meta name="author" content="Julien Falconnet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -47,13 +48,14 @@
             <?php
 
 
-            if ($_SESSION['connected_id']) {
+            if (!empty($_SESSION['connected_id'])) {
 
                 $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
+                    posts.id as post_id,
                     users.alias as author_name,
-                    users.id as author_id,  
+                    users.id as author_id, 
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM followers 
@@ -72,13 +74,10 @@
                 }
 
                 while ($post = $lesInformations->fetch_assoc()) {
-            ?>
-                    <?php
                     include 'post.php';
-                    ?>
-                <?php }
+                }
             } else {
-                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+            ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
             <?php
             }; ?>
 
