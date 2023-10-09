@@ -59,6 +59,7 @@
                 if ($enCoursDeTraitement) {
                     $authorId = $sessionId;
                     $postContent = $_POST['message'];
+                    $postContent = '<p>' . implode("</p></br><p>", (explode("\r\n", $postContent))) . '</p>';
                     // petite sécurité
                     $authorId = intval($mysqli->real_escape_string($authorId));
                     $postContent = $mysqli->real_escape_string($postContent);
@@ -70,21 +71,20 @@
                         . "'" . $postContent . "', "
                         . "NOW(), "
                         . "NULL);";
-                    echo $lInstructionSql;
+                    // echo $lInstructionSql;
                     $pattern = '/\s#(\w+)\b/';
                     if (preg_match_all($pattern, $postContent, $matches)) {
                         foreach ($matches[1] as $match) {
                             echo "Mot hashtag : " . $match . "\n";
-                            if (!array_key_exists($match, $tags)) {
-                                $lInstructionSqlTag = "INSERT INTO tags "
-                                . "(id, label) "
-                                . "VALUES (NULL, "
-                                . $tag_id . ");";
-                            echo $lInstructionSqlTag;
-                            }
+                            // if (!array_key_exists($match, $tags)) {
+                            //     $lInstructionSqlTag = "INSERT INTO tags "
+                            //     . "(id, label) "
+                            //     . "VALUES (NULL, "
+                            //     . $tag_id . ");";
+                            // echo $lInstructionSqlTag;
+                            // }
                         }     
-                    }
-                    
+                    }                    
                     
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
