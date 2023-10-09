@@ -51,71 +51,99 @@ if ($traitementUnlike) {
     </h3>
     <address>par <a href="wall.php?user_id=<?php echo $post['author_id'] ?>"><?php echo $post['author_name'] ?></a> </address>
     <div>
-        <p>
+        <p class="lh-sm">
             <?php echo $post['content'] ?>
         </p>
     </div>
     <footer class="grid gap-0 row-gap-3">
         <small class="p-2">
-            <h5><span class="badge rounded-pill text-bg-success">♥ <?php echo $post['like_number'] ?></span></h5>
-
-            <!-- Si usilisateur connecté  -->
-
-        </small>
 
 
-        <?php
-        // requete pour savoir si le poste est liké
-        if (!empty($_SESSION['connected_id'])) {
-            $sessionId = $_SESSION['connected_id'];
-            $postIdtoCheck = $post['post_id'];
+            <?php
+            // requete pour savoir si le poste est liké
+            if (!empty($_SESSION['connected_id'])) {
+                $sessionId = $_SESSION['connected_id'];
+                $postIdtoCheck = $post['post_id'];
 
-            $lInstructionLikeSql = "
+                $lInstructionLikeSql = "
         SELECT EXISTS(
             SELECT * FROM likes 
             WHERE user_id = '$sessionId' AND post_id = '$postIdtoCheck'
         ) AS isLiked";
-            $lesInformationsLike = $mysqli->query($lInstructionLikeSql);
-            $isLiked = $lesInformationsLike->fetch_assoc();
-            //Si deja liké
-            if ($isLiked['isLiked']) {
-                //bouton grise "Liké"
-        ?>
-                <small class="mx-1">
-                    <form action="<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] ?>" method="post">
-                        <input type='hidden' name='unlike' value='true'>
-                        <input type='hidden' name='postIdtoUnlike' value=<?php echo $post['post_id'] ?>>
-                        <button type="submit" class="btn btn-outline-secondary">Liké</button>
-                    </form>
-                </small>
-            <?php
-                //bouton warning déliké
-                //à coder
-            } else { //Si pas encore liké
+                $lesInformationsLike = $mysqli->query($lInstructionLikeSql);
+                $isLiked = $lesInformationsLike->fetch_assoc();
+
+                if ($isLiked['isLiked']) {
             ?>
-                <small class="mx-1">
-                    <!-- formulaire bouton pour liker à refactoré  -->
-                    <form action="<?php echo $_SERVER['PHP_SELF'] . "?" . $_SERVER['QUERY_STRING'] ?>" method="post">
-                        <input type='hidden' name='like' value='true'>
-                        <input type='hidden' name='postIdtoLike' value=<?php echo $post['post_id'] ?>>
-                        <button class="btn btn-primary" type='submit' value="Like">Like</button>
-                    </form>
-                </small>
-        <?php
+                    <h5>
+                        <button class="badge rounded-pill text-bg-success" data-post-id=<?php echo $post['post_id']; ?>>
+                            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
+                        </button>
+                    </h5>
+        </small>
+    <?php
+                } else {
+    ?>
+        <h5>
+            <button class="badge rounded-pill text-bg-secondary" data-post-id=<?php echo $post['post_id']; ?>>
+                <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
+            </button>
+        </h5>
+        </small>
 
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('.text-bg-success, .text-bg-secondary').click(function() {
+                    var data = {
+                        post_id: $(this).data('post-id'),
+                        user_id: <?php echo $_SESSION['connected_id']; ?>,
+                        status: $(this).hasClass('text-bg-success') ? 'text-bg-success' : 'text-bg-secondary',
+                    };
+
+                    $.ajax({
+                        url: 'script/postScript.php',
+                        type: 'post',
+                        data: data,
+                        dataType: 'json', // Indiquer que vous attendez une réponse JSON
+                        success: function(response) {
+                            var post_id = data['post_id'];
+                            var likeButton = $(".badge[data-post-id=" + post_id + "]");
+
+                            // Utiliser directement la réponse JSON
+                            var newLikesCount = response.likes_count;
+
+                            // Mettre à jour le nombre de likes affiché sur le bouton
+                            likeButton.find('.likes_count' + post_id).text(newLikesCount);
+
+                            // Changer la couleur du bouton en fonction du statut
+                            if (response.action === "new") {
+                                likeButton.removeClass('text-bg-secondary').addClass('text-bg-success');
+                            } else if (response.action === "delete") {
+                                likeButton.removeClass('text-bg-success').addClass('text-bg-secondary');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Erreur de requête AJAX :', status, error);
+                        }
+                    });
+
+                });
+            });
+        </script>
+<?php
+                }
             }
-        }
 
-        $tagsArray = explode(',', $post['taglist']);
-        $count = count($tagsArray);
-        foreach ($tagsArray as $key => $tag) {
-            echo '<a href="">' . $tag . '</a>';
+            $tagsArray = explode(',', $post['taglist']);
+            $count = count($tagsArray);
+            foreach ($tagsArray as $key => $tag) {
+                echo '<a href="">' . $tag . '</a>';
 
-            if ($key < $count - 1) {
-                echo ', ';
+                if ($key < $count - 1) {
+                    echo ', ';
+                }
             }
-        }
-        ?>
+?>
 
     </footer>
 </article>

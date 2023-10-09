@@ -1,6 +1,7 @@
 <?php
 session_start();
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <img src="logo-site.png" alt="Logo de notre réseau social" />
 <nav id="menu">
