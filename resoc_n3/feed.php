@@ -52,7 +52,7 @@
             if (!empty($_SESSION['connected_id'])) {
 
                 $laQuestionEnSql = "
-                    SELECT posts.content,
+                    SELECT posts.content, 
                     posts.created,
                     posts.id as post_id,
                     users.alias as author_name,
