@@ -50,7 +50,7 @@
             if ($_SESSION['connected_id']) {
 
                 $laQuestionEnSql = "
-                    SELECT posts.content,
+                    SELECT posts.content, 
                     posts.created,
                     users.alias as author_name,
                     users.id as author_id,  

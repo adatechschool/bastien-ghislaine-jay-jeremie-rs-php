@@ -31,6 +31,13 @@
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
 
+            /**
+             * Test tags
+             */
+            $leTagEnSql = "SELECT * FROM tags WHERE id= '$tagId' ";
+            $lesInformationsTag = $mysqli->query($laQuestionEnSql);
+            $tags = $lesInformationsTag->fetch_assoc();
+
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
@@ -62,6 +69,21 @@
                         . "NOW(), "
                         . "NULL);";
                     echo $lInstructionSql;
+                    $pattern = '/\s#(\w+)\b/';
+                    if (preg_match_all($pattern, $postContent, $matches)) {
+                        foreach ($matches[1] as $match) {
+                            echo "Mot hashtag : " . $match . "\n";
+                            if (!array_key_exists($match, $tags)) {
+                                $lInstructionSqlTag = "INSERT INTO tags "
+                                . "(id, label) "
+                                . "VALUES (NULL, "
+                                . $tag_id . ");";
+                            echo $lInstructionSqlTag;
+                            }
+                        }     
+                    }
+                    
+                    
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
