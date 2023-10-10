@@ -41,11 +41,11 @@
              */
             $laQuestionEnSql = "SELECT * FROM `tags` WHERE id= '$tagId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
-            $tag = $lesInformations->fetch_assoc();
+            $tagChoisi = $lesInformations->fetch_assoc();
 
-            $tagParPost = "SELECT * FROM `tags` WHERE id= '$tagId' ";
-            $lesInformations = $mysqli->query($tagParPost);
-            $tag = $lesInformations->fetch_assoc();
+            $tagParPost = "SELECT * FROM tags ORDER BY label";
+            $listeDesTags = $mysqli->query($tagParPost);
+
             //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
             //echo "<pre>" . print_r($tag, 1) . "</pre>";
             ?>
@@ -53,7 +53,9 @@
             <section>
                 <h3>Présentation des mots-clefs suivis</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
-                <?php echo $tag['label'] ?> : <?php echo $tagId ?> messages
+                <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>               
+                <a href=""> <?php echo $tagList['label'] . "<br>" ?> </a>
+                <?php };?>
                 <!-- <?php echo $tagId ?>) -->
             </section>
         </aside>
