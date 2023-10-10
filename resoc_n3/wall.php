@@ -80,26 +80,18 @@
                     $pattern = '/#(\w+)\b/';
                     if (preg_match_all($pattern, $postContent, $matches)) {
                         foreach ($matches[1] as $match) {
-                            echo "Mot hashtag : " . $match . "\n";
-                        }
-                    }
-                    //     $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
-                    //     $lesInfos = $mysqli->query($requeteSql);
-                    //         if ($lesInfos->num_rows == 0) {
-                    //             $lInstructionSql = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
-                    //             $ok = $mysqli->query($lInstructionSql);
-                    //         }     
-                    //     }  
-                    // }                    
-                    // echo "<pre>" . print_r($matches[0], 1) . "</pre>";
-                    // echo "<pre>" . print_r($matches[1], 1) . "</pre>";
-                    // echo "<pre>" . print_r($match, 1) . "</pre>";
+                            $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
+                            $lesInfos = $mysqli->query($requeteSql);
+                            if ($lesInfos !== false && $lesInfos->num_rows == 0) {
+                            $lInstructionSqlTag = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";  
+                            $ok = $mysqli->query($lInstructionSqlTag);
+                        }}
+
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
                         echo "Impossible d'ajouter le message: " . $mysqli->error;
-                    }
-                }
+                    }}}
             ?>
                 <article>
                     <form action="wall.php?user_id=<?php echo $sessionId ?>" method="post">

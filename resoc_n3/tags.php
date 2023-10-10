@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>ReSoC - Les message par mot-clé</title>
+    <title>ReSoC - Les messages par mot-clé</title>
     <meta name="author" content="Julien Falconnet">
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
@@ -42,6 +42,10 @@
             $laQuestionEnSql = "SELECT * FROM `tags` WHERE id= '$tagId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $tag = $lesInformations->fetch_assoc();
+
+            $tagParPost = "SELECT * FROM `tags` WHERE id= '$tagId' ";
+            $lesInformations = $mysqli->query($tagParPost);
+            $tag = $lesInformations->fetch_assoc();
             //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
             //echo "<pre>" . print_r($tag, 1) . "</pre>";
             ?>
@@ -49,7 +53,8 @@
             <section>
                 <h3>Présentation des mots-clefs suivis</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
-
+                <?php echo $tag['label'] ?> : <?php echo $tagId ?> messages
+                <!-- <?php echo $tagId ?>) -->
             </section>
         </aside>
         <main>
@@ -92,7 +97,7 @@
             }
 
             /**
-             * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+             * Etape 4: @todo Parcourir les messages et remplir correctement le HTML avec les bonnes valeurs php
              */
             while ($post = $lesInformations->fetch_assoc()) {
 
