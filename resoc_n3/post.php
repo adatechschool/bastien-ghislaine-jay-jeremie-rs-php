@@ -1,5 +1,5 @@
 <?php
-echo "<pre>" . print_r($post, 1) . "</pre>";
+// echo "<pre>" . print_r($post, 1) . "</pre>";
 //echo "<pre>" . print_r($_SESSION['connected_id'], 1) . "</pre>"
 // Si recois requete Post pour liker un post 
 // $traitementLike = isset($_POST['like'], $_POST['postIdtoLike']);
