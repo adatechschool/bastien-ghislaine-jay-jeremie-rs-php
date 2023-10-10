@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>ReSoC - Mur</title>
     <meta name="author" content="Julien Falconnet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -34,10 +36,8 @@
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <a href="wall.php?user_id=<?php echo $user['id'] ?>"><?php echo $user['alias'] ?></a>
-                    (n° <?php echo $userId ?>)
-                </p>
+                <h3>Présentation de votre mur</h3>
+                <p>Sur cette page vous trouverez tous vos messages <i><?php echo $user['alias'] ?></i> !</p>
             </section>
         </aside>
         <main>
@@ -50,6 +50,7 @@
                 if ($enCoursDeTraitement) {
                     $authorId = $sessionId;
                     $postContent = $_POST['message'];
+                    $postContent = '<p>' . implode("</p><p>", (explode("\r\n", $postContent))) . '</p>';
                     // petite sécurité
                     $authorId = intval($mysqli->real_escape_string($authorId));
                     $postContent = $mysqli->real_escape_string($postContent);
@@ -61,7 +62,23 @@
                         . "'" . $postContent . "', "
                         . "NOW(), "
                         . "NULL);";
-                    echo $lInstructionSql;
+                    // echo $lInstructionSql;
+                    $pattern = '/#(\w+)\b/';
+                    if (preg_match_all($pattern, $postContent, $matches)) {
+                        foreach ($matches[1] as $match) {
+                            echo "Mot hashtag : " . $match . "\n";
+                        }}
+                        //     $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
+                        //     $lesInfos = $mysqli->query($requeteSql);
+                        //         if ($lesInfos->num_rows == 0) {
+                        //             $lInstructionSql = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
+                        //             $ok = $mysqli->query($lInstructionSql);
+                        //         }     
+                        //     }  
+                        // }                    
+                        // echo "<pre>" . print_r($matches[0], 1) . "</pre>";
+                        // echo "<pre>" . print_r($matches[1], 1) . "</pre>";
+                        // echo "<pre>" . print_r($match, 1) . "</pre>";
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
@@ -115,8 +132,13 @@
 
 
             $laQuestionEnSql = "
-                    SELECT posts.content, posts.created, posts.id as post_id, users.alias as author_name, users.id as author_id,
-                    COUNT(likes.id) as like_number, GROUP_CONCAT(DISTINCT tags.label) AS taglist 
+                    SELECT posts.content,
+                    posts.created,
+                    posts.id as post_id,
+                    users.alias as author_name,
+                    users.id as author_id,
+                    COUNT(likes.id) as like_number,
+                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
@@ -126,6 +148,7 @@
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";
+
             $lesInformations = $mysqli->query($laQuestionEnSql);
             if (!$lesInformations) {
                 echo ("Échec de la requete : " . $mysqli->error);

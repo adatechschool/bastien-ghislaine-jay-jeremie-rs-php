@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>ReSoC - Flux</title>
     <meta name="author" content="Julien Falconnet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,15 +33,15 @@
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
+            
+            
             ?>
 
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message des utilisatrices
-                    auxquel est abonnée l'utilisatrice <a href="wall.php?user_id=<?php echo $user['id'] ?>"><?php echo $user['alias'] ?></a>
-                    (n° <?php echo $userId ?>)
-                </p>
+                <h3>Présentation du flux</h3>
+                <p>Sur cette page vous trouverez tous les messages des utilisateurs / utilisatrices
+                    auxquel vous êtes abonné.e.</p>
 
             </section>
         </aside>
@@ -47,14 +49,15 @@
             <?php
 
 
-            if ($_SESSION['connected_id']) {
+            if (!empty($_SESSION['connected_id'])) {
 
                 $laQuestionEnSql = "
-                    SELECT posts.content,
+                    SELECT posts.content, 
                     posts.created,
+                    posts.id as post_id,
                     users.alias as author_name,
-                    users.id as author_id,  
-                    count(likes.id) as like_number,  
+                    users.id as author_id, 
+                    COUNT(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM followers 
                     JOIN users ON users.id=followers.followed_user_id
@@ -62,7 +65,7 @@
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
                     LEFT JOIN likes      ON likes.post_id  = posts.id 
-                    WHERE followers.following_user_id='$userId' 
+                    WHERE followers.following_user_id='$userId'
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";
@@ -72,13 +75,10 @@
                 }
 
                 while ($post = $lesInformations->fetch_assoc()) {
-            ?>
-                    <?php
                     include 'post.php';
-                    ?>
-                <?php }
+                }
             } else {
-                ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
+            ?> <article> <?php echo 'Merci de vous connecter !!'; ?> </article>
             <?php
             }; ?>
 
