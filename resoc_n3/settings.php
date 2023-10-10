@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start(); // Démarre le buffering de sortie
 ?>
 
 <!doctype html>
@@ -11,6 +12,7 @@ session_start();
     <meta name="author" content="Julien Falconnet">
     <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -41,13 +43,14 @@ session_start();
         } else {
         // Si user_id n'est pas défini dans l'URL, affichez un message d'erreur
         echo "L'identifiant de l'utilisateur n'est pas défini.";
-    }
+        }
+
     ?>
 
         <aside>
             <?php if(isset($imageSrc)){ ?> 
-                <div class="gallery"> 
-                    <img src="<?php echo $imageSrc; ?>" alt="Portrait de l'utilisateur" />
+                <div class="gallery">
+                    <img src="<?php echo $imageSrc; ?>" alt="Portrait de l'utilisateur" class="img-thumbnail" />
                 </div> 
             <?php }else{ ?> 
                  <p class="status error">Image not found...</p> 
@@ -107,7 +110,9 @@ session_start();
                     // Vérifie la taille maximale de l'image (5 Mo)
                     if ($image_size <= 5 * 1024 * 1024) {
                         $image_bin = file_get_contents($image_tmp_name);
-                
+                    // Supprime l'ancienne image de profil s'il en existe une
+                        $mysqli->query("DELETE FROM images WHERE user_id = $userId");
+
                         $sql = "INSERT INTO images (user_id, name, size, type, bin) VALUES (?, ?, ?, ?, ?)";
                         $stmt = $mysqli->prepare($sql);
                 
@@ -116,7 +121,9 @@ session_start();
                             $stmt->execute();
 
                             if ($stmt->affected_rows > 0) {
-                                echo "L'image a été téléchargée avec succès.";
+                            // Redirige l'utilisateur vers la page de paramètres après l'upload.
+                                header("Location: settings.php?user_id=" . $userId);
+                                exit();
                             } else {
                                 echo "Une erreur s'est produite lors de l'insertion de l'image.";
                             }
@@ -133,7 +140,7 @@ session_start();
                         echo "La taille de l'image dépasse la limite de 5 Mo.";
                     }
                 }
-                
+            
             ?>
                 <article class='parameters'>
                     <h3>Mes paramètres</h3>
@@ -166,3 +173,6 @@ session_start();
 </body>
 
 </html>
+<?php
+ob_end_flush(); // Envoie le tampon de sortie et désactive le buffering
+?>
