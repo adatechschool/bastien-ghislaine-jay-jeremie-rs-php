@@ -36,7 +36,9 @@
             ?>
                     <h5>
                         <button class="badge rounded-pill text-bg-success" data-post-id=<?php echo $post['post_id']; ?> data-user-id=<?php echo $sessionId; ?>>
-                            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
+                            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>">
+                                    <?php echo $post['like_number'] ?>
+                                </span></span>
                         </button>
                     </h5>
         </small>

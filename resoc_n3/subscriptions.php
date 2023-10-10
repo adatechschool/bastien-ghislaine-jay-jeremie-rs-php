@@ -59,9 +59,10 @@
                         $('.bg-danger').click(function(e) {
                             e.preventDefault();
 
+                            var button = $(this);
                             var data = {
-                                follower_id: $(this).data('follower-id'),
-                                user_id: $(this).data('user-id'),
+                                follower_id: button.data('follower-id'),
+                                user_id: button.data('user-id'),
                             };
 
                             $.ajax({
@@ -70,8 +71,16 @@
                                 data: data,
                                 dataType: 'json',
                                 success: function(response) {
-                                    // Handle success, e.g., update the UI
-                                    console.log(response);
+                                    console.log(response.action);
+
+                                    if (response.action === "unfollowed") {
+                                        // Disable the button
+                                        button.prop('disabled', true);
+                                        // Change button text
+                                        button.text('Désabonné');
+                                        // Optionally, you can also update the button style
+                                        button.removeClass('bg-danger').addClass('text-muted');
+                                    }
                                 },
                                 error: function(error) {
                                     // Handle error
