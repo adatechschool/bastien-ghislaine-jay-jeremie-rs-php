@@ -25,9 +25,8 @@ session_start();
         <aside>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez les informations de l'utilisatrice
-                    n° <?php echo intval($_GET['user_id']) ?></p>
+                <h3>Présentation des paramètres</h3>
+                <p>Sur cette page vous trouverez l'ensemble de vos informations.</p>
 
             </section>
         </aside>
@@ -68,7 +67,45 @@ session_start();
                     echo ("Échec de la requete : " . $mysqli->error);
                 }
                 $user = $lesInformations->fetch_assoc();
+            
+                if (isset($_POST["valider"])) {
+                    include 'logingSQL.php';
+                
+                    $image_name = $_FILES["image"]["name"];
+                    $image_size = $_FILES["image"]["size"];
+                    $image_type = $_FILES["image"]["type"];
+                    $image_tmp_name = $_FILES["image"]["tmp_name"];
+                    
+                    // Vérifie la taille maximale de l'image (5 Mo)
+                    if ($image_size <= 5 * 1024 * 1024) {
+                        $image_bin = file_get_contents($image_tmp_name);
+                
+                        $sql = "INSERT INTO images (user_id, name, size, type, bin) VALUES (?, ?, ?, ?, ?)";
+                        $stmt = $mysqli->prepare($sql);
+                
+                        if ($stmt) {
+                            $stmt->bind_param("isiss", $userId, $image_name, $image_size, $image_type, $image_bin);
+                            $stmt->execute();
 
+                            if ($stmt->affected_rows > 0) {
+                                echo "L'image a été téléchargée avec succès.";
+                            } else {
+                                echo "Une erreur s'est produite lors de l'insertion de l'image.";
+                            }
+                
+                            $stmt->close();
+                        } else {
+                            echo "Erreur de préparation de la requête : " . $mysqli->error;
+                        }
+                        // Redirige l'utilisateur vers la page de paramètres après l'upload.
+                        header("Location: settings.php?user_id=" . $userId);
+                        exit();
+                    } else {
+                        // La taille de l'image dépasse la limite
+                        echo "La taille de l'image dépasse la limite de 5 Mo.";
+                    }
+                }
+                
             ?>
                 <article class='parameters'>
                     <h3>Mes paramètres</h3>
@@ -83,8 +120,13 @@ session_start();
                         <dd><?php echo $user['totalgiven'] ?></dd>
                         <dt>Nombre de "J'aime" reçus</dt>
                         <dd><?php echo $user['totalrecieved'] ?></dd>
-                    </dl>
-
+                        <dt>Photo de profil</dt>
+                        <dd>
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="max_file-size" value="250000" />
+                                <input type="file" name="image" /><br />
+                                <input type="submit" name="valider" value="charger" />
+                            </form>
                 </article>
             <?php
             } else {

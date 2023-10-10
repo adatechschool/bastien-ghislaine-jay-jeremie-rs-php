@@ -39,7 +39,7 @@
             /**
              * Etape 3: récupérer le nom du mot-clé
              */
-            $laQuestionEnSql = "SELECT * FROM tags WHERE id= '$tagId' ";
+            $laQuestionEnSql = "SELECT * FROM `tags` WHERE id= '$tagId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $tag = $lesInformations->fetch_assoc();
             //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
@@ -47,11 +47,8 @@
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez les derniers messages comportant
-                    le mot-clé <?php echo $tag['label'] ?>
-                    (n° <?php echo $tagId ?>)
-                </p>
+                <h3>Présentation des mots-clefs suivis</h3>
+                <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
 
             </section>
         </aside>
@@ -74,7 +71,7 @@
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
                     LEFT JOIN likes      ON likes.post_id  = posts.id 
-                    WHERE filter.tag_id = '$tagId' 
+                    WHERE filter.tag_id ='$tagId' 
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";

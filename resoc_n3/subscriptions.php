@@ -17,14 +17,10 @@
     </header>
     <div id="wrapper">
         <aside>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
+            <img src="user.jpg" alt="Portrait de l'utilisateur / utilisatrise" />
             <section>
-                <h3 class="fw-bold">Présentation</h3>
-                <p class="fw-light">Sur cette page vous trouverez la liste des personnes dont
-                    l'utilisatrice
-                    n° <?php echo intval($_GET['user_id']) ?>
-                    suit les messages
-                </p>
+                <h3 class="fw-bold">Présentation des abonnements</h3>
+                <p class="fw-light">Sur cette page vous trouverez la liste des personnes dont vous suivez les messages.</p>
 
             </section>
         </aside>
