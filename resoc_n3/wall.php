@@ -33,20 +33,11 @@
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
 
-            /**
-             * Test tags
-             */
-            $leTagEnSql = "SELECT * FROM tags WHERE id= '$tagId' ";
-            $lesInformationsTag = $mysqli->query($laQuestionEnSql);
-            $tags = $lesInformationsTag->fetch_assoc();
-
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message de l'utilisatrice : <a href="wall.php?user_id=<?php echo $user['id'] ?>"><?php echo $user['alias'] ?></a>
-                    (n° <?php echo $userId ?>)
-                </p>
+                <h3>Présentation de votre mur</h3>
+                <p>Sur cette page vous trouverez tous vos messages <i><?php echo $user['alias'] ?></i> !</p>
             </section>
         </aside>
         <main>
@@ -59,7 +50,7 @@
                 if ($enCoursDeTraitement) {
                     $authorId = $sessionId;
                     $postContent = $_POST['message'];
-                    $postContent = '<p>' . implode("</p></br><p>", (explode("\r\n", $postContent))) . '</p>';
+                    $postContent = '<p>' . implode("</p><p>", (explode("\r\n", $postContent))) . '</p>';
                     // petite sécurité
                     $authorId = intval($mysqli->real_escape_string($authorId));
                     $postContent = $mysqli->real_escape_string($postContent);
@@ -72,20 +63,22 @@
                         . "NOW(), "
                         . "NULL);";
                     // echo $lInstructionSql;
-                    $pattern = '/\s#(\w+)\b/';
+                    $pattern = '/#(\w+)\b/';
                     if (preg_match_all($pattern, $postContent, $matches)) {
                         foreach ($matches[1] as $match) {
                             echo "Mot hashtag : " . $match . "\n";
-                            // if (!array_key_exists($match, $tags)) {
-                            //     $lInstructionSqlTag = "INSERT INTO tags "
-                            //     . "(id, label) "
-                            //     . "VALUES (NULL, "
-                            //     . $tag_id . ");";
-                            // echo $lInstructionSqlTag;
-                            // }
-                        }     
-                    }                    
-                    
+                        }}
+                        //     $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
+                        //     $lesInfos = $mysqli->query($requeteSql);
+                        //         if ($lesInfos->num_rows == 0) {
+                        //             $lInstructionSql = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
+                        //             $ok = $mysqli->query($lInstructionSql);
+                        //         }     
+                        //     }  
+                        // }                    
+                        // echo "<pre>" . print_r($matches[0], 1) . "</pre>";
+                        // echo "<pre>" . print_r($matches[1], 1) . "</pre>";
+                        // echo "<pre>" . print_r($match, 1) . "</pre>";
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {

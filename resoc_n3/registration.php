@@ -19,7 +19,7 @@
 
         <aside>
             <h2>Présentation</h2>
-            <p>Bienvenu sur notre réseau social.</p>
+            <p>Bienvenue sur notre réseau social dédié au développement informatique.</p>
         </aside>
         <main>
             <article>

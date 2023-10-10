@@ -33,15 +33,15 @@
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
+            
+            
             ?>
 
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message des utilisatrices
-                    auxquel est abonnée l'utilisatrice <a href="wall.php?user_id=<?php echo $user['id'] ?>"><?php echo $user['alias'] ?></a>
-                    (n° <?php echo $userId ?>)
-                </p>
+                <h3>Présentation du flux</h3>
+                <p>Sur cette page vous trouverez tous les messages des utilisateurs / utilisatrices
+                    auxquel vous êtes abonné.e.</p>
 
             </section>
         </aside>
@@ -65,7 +65,7 @@
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
                     LEFT JOIN likes      ON likes.post_id  = posts.id 
-                    WHERE followers.following_user_id='$userId' 
+                    WHERE followers.following_user_id='$userId'
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";
