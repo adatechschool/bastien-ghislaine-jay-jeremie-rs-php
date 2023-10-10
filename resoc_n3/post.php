@@ -1,48 +1,49 @@
 <?php
-
+echo "<pre>" . print_r($post, 1) . "</pre>";
+//echo "<pre>" . print_r($_SESSION['connected_id'], 1) . "</pre>"
 // Si recois requete Post pour liker un post 
-$traitementLike = isset($_POST['like'], $_POST['postIdtoLike']);
-if ($traitementLike) {
-    $sessionId = $_SESSION['connected_id'];
-    $postId = $_POST['postIdtoLike'];
-    $sessionId = intval($mysqli->real_escape_string($sessionId));
-    $postId = intval($mysqli->real_escape_string($postId));
+// $traitementLike = isset($_POST['like'], $_POST['postIdtoLike']);
+// if ($traitementLike) {
+//     $sessionId = $_SESSION['connected_id'];
+//     $postId = $_POST['postIdtoLike'];
+//     $sessionId = intval($mysqli->real_escape_string($sessionId));
+//     $postId = intval($mysqli->real_escape_string($postId));
 
-    $sql = "SELECT * FROM likes WHERE user_id = $sessionId AND post_id = $postId";
-    $result = $mysqli->query($sql);
+//     $sql = "SELECT * FROM likes WHERE user_id = $sessionId AND post_id = $postId";
+//     $result = $mysqli->query($sql);
 
-    if ($result->num_rows == 0) {
+//     if ($result->num_rows == 0) {
 
-        $lInstructionSql = "INSERT INTO likes "
-            . "(id, user_id, post_id) "
-            . "VALUES (NULL, "
-            . $sessionId . ", "
-            . $postId . ");";
-        echo $lInstructionSql;
+//         $lInstructionSql = "INSERT INTO likes "
+//             . "(id, user_id, post_id) "
+//             . "VALUES (NULL, "
+//             . $sessionId . ", "
+//             . $postId . ");";
+//         echo $lInstructionSql;
 
-        $ok = $mysqli->query($lInstructionSql);
-        if (!$ok) {
-            echo "Impossible de liker ce post :" . $mysqli->error;
-        }
-    }
-}
+//         $ok = $mysqli->query($lInstructionSql);
+//         if (!$ok) {
+//             echo "Impossible de liker ce post :" . $mysqli->error;
+//         }
+//     }
+// }
 
-// si recois requete Post pour unliker un post 
-$traitementUnlike = isset($_POST['unlike'], $_POST['postIdtoUnlike']);
-if ($traitementUnlike) {
-    $sessionId = $_SESSION['connected_id'];
-    $postId = $_POST['postIdtoUnlike'];
+// // si recois requete Post pour unliker un post 
+// $traitementUnlike = isset($_POST['unlike'], $_POST['postIdtoUnlike']);
+// if ($traitementUnlike) {
+//     $sessionId = $_SESSION['connected_id'];
+//     $postId = $_POST['postIdtoUnlike'];
 
-    $sessionId = intval($mysqli->real_escape_string($sessionId));
-    $postId = intval($mysqli->real_escape_string($postId));
+//     $sessionId = intval($mysqli->real_escape_string($sessionId));
+//     $postId = intval($mysqli->real_escape_string($postId));
 
-    $sql = "DELETE FROM likes WHERE user_id =" . $sessionId . " AND post_id =" . $postId . ";";
+//     $sql = "DELETE FROM likes WHERE user_id =" . $sessionId . " AND post_id =" . $postId . ";";
 
-    $ok = $mysqli->query($sql);
-    if (!$ok) {
-        echo "Impossible de déliker ce post :" . $mysqli->error;
-    }
-}
+//     $ok = $mysqli->query($sql);
+//     if (!$ok) {
+//         echo "Impossible de déliker ce post :" . $mysqli->error;
+//     }
+// }
 ?>
 
 <article class="p-4">
@@ -61,7 +62,8 @@ if ($traitementUnlike) {
 
             <?php
             // requete pour savoir si le poste est liké
-            if (!empty($_SESSION['connected_id'])) {
+            if ($_SESSION['connected_id']) {
+
                 $sessionId = $_SESSION['connected_id'];
                 $postIdtoCheck = $post['post_id'];
 
@@ -76,7 +78,7 @@ if ($traitementUnlike) {
                 if ($isLiked['isLiked']) {
             ?>
                     <h5>
-                        <button class="badge rounded-pill text-bg-success" data-post-id=<?php echo $post['post_id']; ?>>
+                        <button class="badge rounded-pill text-bg-success" data-post-id=<?php echo $post['post_id']; ?> data-user-id=<?php echo $sessionId; ?>>
                             <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
                         </button>
                     </h5>
@@ -85,53 +87,66 @@ if ($traitementUnlike) {
                 } else {
     ?>
         <h5>
-            <button class="badge rounded-pill text-bg-secondary" data-post-id=<?php echo $post['post_id']; ?>>
+            <button class="badge rounded-pill text-bg-secondary" data-post-id=<?php echo $post['post_id']; ?> data-user-id=<?php echo $sessionId; ?>>
                 <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
             </button>
         </h5>
         </small>
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('.text-bg-success, .text-bg-secondary').click(function() {
-                    var data = {
-                        post_id: $(this).data('post-id'),
-                        user_id: <?php echo $_SESSION['connected_id']; ?>,
-                        status: $(this).hasClass('text-bg-success') ? 'text-bg-success' : 'text-bg-secondary',
-                    };
-
-                    $.ajax({
-                        url: 'script/postScript.php',
-                        type: 'post',
-                        data: data,
-                        dataType: 'json', // Indiquer que vous attendez une réponse JSON
-                        success: function(response) {
-                            var post_id = data['post_id'];
-                            var likeButton = $(".badge[data-post-id=" + post_id + "]");
-
-                            // Utiliser directement la réponse JSON
-                            var newLikesCount = response.likes_count;
-
-                            // Mettre à jour le nombre de likes affiché sur le bouton
-                            likeButton.find('.likes_count' + post_id).text(newLikesCount);
-
-                            // Changer la couleur du bouton en fonction du statut
-                            if (response.action === "new") {
-                                likeButton.removeClass('text-bg-secondary').addClass('text-bg-success');
-                            } else if (response.action === "delete") {
-                                likeButton.removeClass('text-bg-success').addClass('text-bg-secondary');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Erreur de requête AJAX :', status, error);
-                        }
-                    });
-
-                });
-            });
-        </script>
-<?php
+    <?php
                 }
+    ?>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.text-bg-success, .text-bg-secondary').click(function() {
+                var data = {
+                    post_id: $(this).data('post-id'),
+                    user_id: $(this).data('user-id'),
+                    status: $(this).hasClass('text-bg-success') ? 'text-bg-success' : 'text-bg-secondary',
+                };
+
+                $.ajax({
+                    url: 'script/postScript.php',
+                    type: 'post',
+                    data: data,
+                    dataType: 'json', // Indiquer que vous attendez une réponse JSON
+                    success: function(response) {
+                        var post_id = data['post_id'];
+                        var likeButton = $(".badge[data-post-id=" + post_id + "]");
+
+                        // Utiliser directement la réponse JSON
+                        var newLikesCount = response.likes_count;
+
+                        // Mettre à jour le nombre de likes affiché sur le bouton
+                        likeButton.find('.likes_count' + post_id).text(newLikesCount);
+
+                        // Changer la couleur du bouton en fonction du statut
+                        if (response.action === "new") {
+                            likeButton.removeClass('text-bg-secondary').addClass('text-bg-success');
+                        } else if (response.action === "delete") {
+                            likeButton.removeClass('text-bg-success').addClass('text-bg-secondary');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Erreur de requête AJAX :', status, error);
+                    }
+                });
+
+            });
+        });
+    </script>
+<?php
+            } else {
+?>
+
+    <h5>
+        <button class="badge rounded-pill text-bg-secondary" data-post-id=<?php echo $post['post_id']; ?>>
+            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
+        </button>
+    </h5>
+    </small>
+
+<?php
             }
 
             $tagsArray = explode(',', $post['taglist']);

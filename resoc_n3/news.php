@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <title>ReSoC - Actualités</title>
     <meta name="author" content="Julien Falconnet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -46,10 +48,11 @@
 
             $laQuestionEnSql = "
                     SELECT posts.content,
-                    posts.created,
+                    posts.created,  
+                    posts.id as post_id,
                     users.alias as author_name,
                     users.id as author_id,    
-                    count(likes.id) as like_number,  
+                    COUNT(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id

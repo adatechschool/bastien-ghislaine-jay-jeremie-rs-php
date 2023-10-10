@@ -9,6 +9,7 @@ session_start();
     <meta charset="utf-8">
     <title>ReSoC - Paramètres</title>
     <meta name="author" content="Julien Falconnet">
+    <link rel="stylesheet" href="css/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
 </head>
 
