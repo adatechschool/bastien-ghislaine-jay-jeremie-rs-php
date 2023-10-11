@@ -70,7 +70,7 @@
                     ?>
                         <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
                             <a href="tags.php?tag_id=<?php echo $tagId ?>" class="tag-link" data-tag-id="<?php echo $tagId ?>">
-                                <i> <?php echo $tagList['label'] ?> </i>
+                                <i class="text-capitalize"> <?php echo $tagList['label'] ?> </i>
                             </a>
                             <span class="badge bg-primary rounded-pill"><?php echo $tagCount; ?></span>
                         </li>
