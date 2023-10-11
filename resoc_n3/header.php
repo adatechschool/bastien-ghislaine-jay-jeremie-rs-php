@@ -1,7 +1,9 @@
 <?php
 session_start();
 ?>
+<style>@import url('https://fonts.googleapis.com/css2?family=Cairo+Play:wght@500&display=swap');</style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 
 <img src="logo-site.png" alt="Logo de notre réseau social" />
 <nav id="menu">
