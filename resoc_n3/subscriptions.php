@@ -20,8 +20,9 @@
         <aside>
             <img src="user.jpg" alt="Portrait de l'utilisateur / utilisatrice" />
             <section>
-                <h3 class="fw-bold">Présentation des abonnements</h3>
-                <p class="fw-light">Sur cette page, vous trouverez la liste des personnes dont vous suivez les messages.</p>
+                <h3 class="fw-bold">Présentation de vos abonnements</h3>
+                <p class="fw-light">Sur cette page vous trouverez la liste des personnes et des mots-clefs dont vous suivez les messages.</p>
+
             </section>
         </aside>
         <main class='contacts'>

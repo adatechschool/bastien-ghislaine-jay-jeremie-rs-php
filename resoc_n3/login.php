@@ -27,7 +27,7 @@ if (!isset($_SESSION['count'])) {
 
         <aside>
             <h2>Présentation</h2>
-            <p>Bienvenue sur notre réseau social.</p>
+            <p>Bienvenue sur notre réseau social dédié au développement web.</p>
         </aside>
         <main>
             <article>
@@ -82,6 +82,7 @@ if (!isset($_SESSION['count'])) {
                     </dl>
                     <input type='submit'>
                 </form>
+                <br>
                 <p>
                     Pas de compte?
                     <a href='registration.php'>Inscrivez-vous.</a>

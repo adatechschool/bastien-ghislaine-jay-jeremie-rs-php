@@ -50,7 +50,7 @@
             //echo "<pre>" . print_r($tag, 1) . "</pgire>";
             ?>
             <section>
-                <h3>Présentation des mots-clefs suivis</h3>
+                <h3>Présentation des mots-clefs</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
                 <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>
                 <div class="motHashTag">               

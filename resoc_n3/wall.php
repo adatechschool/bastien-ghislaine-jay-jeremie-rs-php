@@ -33,6 +33,8 @@
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
 
+            $sessionId = $_SESSION['connected_id'];
+
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
@@ -40,19 +42,19 @@
                 if ($sessionId == $userId) {
                 ?>
                     <h3>Présentation de votre mur</h3>
+                    <p>Sur cette page vous trouverez tous vos messages <i><?php echo $user['alias'] ?></i> !</p>
                 <?php } else {
                 ?>
                     <h3>Présentation du mur de <?php echo $user['alias'] ?></h3>
+                    <p>Sur cette page vous trouverez tous les messages de <i><?php echo $user['alias'] ?></i> !</p>
                 <?php
                 } ?>
-                <p>Sur cette page vous trouverez tous vos messages <i><?php echo $user['alias'] ?></i> !</p>
-
+                
                 <?php
                 if (($_SESSION['connected_id']) && ($_SESSION['connected_id'] != $userId)) {
                     include 'wall/followBtn.php';
                 };
                 ?>
-
             </section>
         </aside>
         <main>
@@ -98,9 +100,9 @@
                         <input type='hidden' name='???' value='achanger'>
                         <dl>
                             <dt><label for='message'>Ecrivez votre post</label></dt>
-                            <dd><textarea name='message'></textarea></dd>
+                            <dd><textarea name='message' class='message custom-width'></textarea></dd>
                         </dl>
-                        <input type='submit'>
+                        <div class='button-valider'> <input type='submit'></div>
                     </form>
                 </article>
             <?php
