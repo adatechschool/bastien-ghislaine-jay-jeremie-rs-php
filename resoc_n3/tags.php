@@ -53,8 +53,12 @@
             <section>
                 <h3>Présentation des mots-clefs suivis</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
-                <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>               
-                <a href=""> <?php echo $tagList['label'] . "<br>" ?> </a>
+                <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>
+                <div class="motHashTag">               
+                <a href=""><i> <?php echo $tagList['label'] ?> </i></a>
+                <button class="badge bg-danger" tag-id="<?php echo $tagId['id']; ?>" data-user-id="<?php echo $_SESSION['connected_id']; ?>">Se désabonner</button>
+                </br>  
+            </div> 
                 <?php };?>
                 <!-- <?php echo $tagId ?>) -->
             </section>
