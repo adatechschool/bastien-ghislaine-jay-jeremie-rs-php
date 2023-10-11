@@ -91,6 +91,8 @@ body>header #user:hover ul{
 }
 #wrapper aside img{
     display: block;
+    width: 100px;
+    height: 100px;
     margin: auto;
 }
 

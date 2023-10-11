@@ -50,7 +50,7 @@ ob_start(); // Démarre le buffering de sortie
         <aside>
             <?php if(isset($imageSrc)){ ?> 
                 <div class="gallery">
-                    <img src="<?php echo $imageSrc; ?>" alt="Portrait de l'utilisateur" class="img-thumbnail" />
+                    <img src="<?php echo $imageSrc; ?>" alt="Portrait de l'utilisateur"  />
                 </div> 
             <?php }else{ ?> 
                  <p class="status error">Image not found...</p> 
