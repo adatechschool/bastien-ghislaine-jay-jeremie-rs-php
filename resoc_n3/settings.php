@@ -23,42 +23,14 @@ ob_start(); // Démarre le buffering de sortie
     </header>
     <div id="wrapper" class='profile'>
 
-    <?php 
-    require_once 'logingSQL.php'; 
-    // Vérifier si user_id est défini dans l'URL
-    if (isset($_GET['user_id'])) {
-        $userId = intval($_GET['user_id']);
-
-        // Récupérer les données de l'image depuis la base de données
-        $result = $mysqli->query("SELECT type, bin FROM images WHERE user_id = $userId ORDER BY id DESC LIMIT 1");
-
-        if ($result !== false && $result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $imageData = base64_encode($row['bin']);
-            $imageSrc = "data:" . $row['type'] . ";base64," . $imageData;
-        } else {
-            // Si l'utilisateur n'a pas de photo de profil personnalisée, utilisez une image par défaut
-            $imageSrc = "chemin/vers/dossier/images/default.jpg";
-        }
-        } else {
-        // Si user_id n'est pas défini dans l'URL, affichez un message d'erreur
-        echo "L'identifiant de l'utilisateur n'est pas défini.";
-        }
-
-    ?>
-
         <aside>
-            <?php if(isset($imageSrc)){ ?> 
-                <div class="gallery">
-                    <img src="<?php echo $imageSrc; ?>" alt="Portrait de l'utilisateur"  />
-                </div> 
-            <?php }else{ ?> 
-                 <p class="status error">Image not found...</p> 
-            <?php } ?>
-            <section>
-                <h3>Présentation des paramètres</h3>
-                <p>Sur cette page vous trouverez l'ensemble de vos informations.</p>
-
+            <?php
+            include 'userphoto.php';
+            ?>
+            </section>
+                <h3>Présentation</h3>
+                <p>Sur cette page vous trouverez les informations de l'utilisatrice
+                    n° <?php echo intval($_GET['user_id']) ?></p>
             </section>
         </aside>
         <main>

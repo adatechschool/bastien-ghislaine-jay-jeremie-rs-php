@@ -30,6 +30,8 @@
         <aside>
             <?php
 
+            include 'userphoto.php';
+
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
@@ -37,7 +39,6 @@
             
             ?>
 
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>Présentation du flux</h3>
                 <p>Sur cette page vous trouverez tous les messages des utilisateurs / utilisatrices

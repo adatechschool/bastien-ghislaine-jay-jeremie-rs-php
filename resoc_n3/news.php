@@ -17,11 +17,20 @@
         ?>
     </header>
     <div id="wrapper">
+
         <aside>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
+        <?php
+        include 'userphoto.php'
+        ?>
             <section>
+<<<<<<< HEAD
                 <h3>Présentation des actualités</h3>
                 <p>Sur cette page vous trouverez les derniers messages de tous les utilisateurs / utilisatrices du site.</p>
+=======
+                <h3>Présentation</h3>
+                <p>Sur cette page vous trouverez les informations de l'utilisatrice
+                    n° <?php echo intval($_GET['user_id']) ?></p>
+>>>>>>> fbe7a44 (create userphoto.php and links to this file in the different pages)
             </section>
         </aside>
         <main>

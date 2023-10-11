@@ -26,6 +26,9 @@
 
         <aside>
             <?php
+
+            include 'userphoto.php';
+
             /**
              * Etape 3: récupérer le nom de l'utilisateur
              */
@@ -34,7 +37,6 @@
             $user = $lesInformations->fetch_assoc();
 
             ?>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <?php
                 if ($sessionId == $userId) {
