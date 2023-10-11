@@ -18,7 +18,7 @@
     </header>
     <div id="wrapper">
         <?php
-
+        $sessionId = intval($_SESSION['connected_id']);
         $userId = intval($_GET['user_id']);
 
         include 'logingSQL.php';
@@ -36,13 +36,27 @@
             ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
-                <h3>Présentation de votre mur</h3>
+                <?php
+                if ($sessionId == $userId) {
+                ?>
+                    <h3>Présentation de votre mur</h3>
+                <?php } else {
+                ?>
+                    <h3>Présentation du mur de <?php echo $user['alias'] ?></h3>
+                <?php
+                } ?>
                 <p>Sur cette page vous trouverez tous vos messages <i><?php echo $user['alias'] ?></i> !</p>
+
+                <?php
+                if (($_SESSION['connected_id']) && ($_SESSION['connected_id'] != $userId)) {
+                    include 'wall/followBtn.php';
+                };
+                ?>
+
             </section>
         </aside>
         <main>
             <?php
-            $sessionId = $_SESSION['connected_id'];
 
             if ($sessionId == $userId) {
 
@@ -67,18 +81,19 @@
                     if (preg_match_all($pattern, $postContent, $matches)) {
                         foreach ($matches[1] as $match) {
                             echo "Mot hashtag : " . $match . "\n";
-                        }}
-                        //     $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
-                        //     $lesInfos = $mysqli->query($requeteSql);
-                        //         if ($lesInfos->num_rows == 0) {
-                        //             $lInstructionSql = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
-                        //             $ok = $mysqli->query($lInstructionSql);
-                        //         }     
-                        //     }  
-                        // }                    
-                        // echo "<pre>" . print_r($matches[0], 1) . "</pre>";
-                        // echo "<pre>" . print_r($matches[1], 1) . "</pre>";
-                        // echo "<pre>" . print_r($match, 1) . "</pre>";
+                        }
+                    }
+                    //     $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
+                    //     $lesInfos = $mysqli->query($requeteSql);
+                    //         if ($lesInfos->num_rows == 0) {
+                    //             $lInstructionSql = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
+                    //             $ok = $mysqli->query($lInstructionSql);
+                    //         }     
+                    //     }  
+                    // }                    
+                    // echo "<pre>" . print_r($matches[0], 1) . "</pre>";
+                    // echo "<pre>" . print_r($matches[1], 1) . "</pre>";
+                    // echo "<pre>" . print_r($match, 1) . "</pre>";
                     // execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
@@ -97,39 +112,7 @@
                     </form>
                 </article>
             <?php
-            } elseif (($sessionId) && ($sessionId != $userId)) {
-
-                $enCoursDeTraitement = isset($_POST['suivre']);
-                if ($enCoursDeTraitement) {
-                    $userFollowedId = $userId;
-                    $userFollowingId = $sessionId;
-
-                    $userFollowedId = intval($mysqli->real_escape_string($userFollowedId));
-                    $userFollowingId = intval($mysqli->real_escape_string($userFollowingId));
-
-                    $lInstructionSql = "INSERT INTO followers"
-                        . "(id, followed_user_id, following_user_id) "
-                        . "VALUES (NULL, "
-                        . $userFollowedId . ", "
-                        . $userFollowingId . ");";
-                    echo $lInstructionSql;
-
-                    $ok = $mysqli->query($lInstructionSql);
-                    if (!$ok) {
-                        echo "Impossible de suivre cet utilisateur" . $mysqli->error;
-                    }
-                }
-            ?>
-                <article>
-                    <form action="wall.php?user_id=<?php echo $userId ?>" method="post">
-                        <input type='hidden' name='suivre' value='true'>
-                        <input type='submit' value="Suivre">
-                    </form>
-                </article>
-
-            <?php
             }
-
 
             $laQuestionEnSql = "
                     SELECT posts.content,

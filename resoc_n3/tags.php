@@ -53,6 +53,17 @@
             </section>
         </aside>
         <main>
+            <article class="container">
+                <div class="row">
+                    <div class="col text-start text-capitalize h4">
+                        #<?php echo $tag['label'];
+                            ?>
+                    </div>
+                    <div class="col text-end">
+                        <button type="button" class="btn btn-primary">Suivre</button>
+                    </div>
+                </div>
+            </article>
             <?php
             /**
              * Etape 3: récupérer tous les messages avec un mot clé donné

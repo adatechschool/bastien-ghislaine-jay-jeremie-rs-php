@@ -1,49 +1,6 @@
 <?php
-echo "<pre>" . print_r($post, 1) . "</pre>";
+//echo "<pre>" . print_r($post, 1) . "</pre>";
 //echo "<pre>" . print_r($_SESSION['connected_id'], 1) . "</pre>"
-// Si recois requete Post pour liker un post 
-// $traitementLike = isset($_POST['like'], $_POST['postIdtoLike']);
-// if ($traitementLike) {
-//     $sessionId = $_SESSION['connected_id'];
-//     $postId = $_POST['postIdtoLike'];
-//     $sessionId = intval($mysqli->real_escape_string($sessionId));
-//     $postId = intval($mysqli->real_escape_string($postId));
-
-//     $sql = "SELECT * FROM likes WHERE user_id = $sessionId AND post_id = $postId";
-//     $result = $mysqli->query($sql);
-
-//     if ($result->num_rows == 0) {
-
-//         $lInstructionSql = "INSERT INTO likes "
-//             . "(id, user_id, post_id) "
-//             . "VALUES (NULL, "
-//             . $sessionId . ", "
-//             . $postId . ");";
-//         echo $lInstructionSql;
-
-//         $ok = $mysqli->query($lInstructionSql);
-//         if (!$ok) {
-//             echo "Impossible de liker ce post :" . $mysqli->error;
-//         }
-//     }
-// }
-
-// // si recois requete Post pour unliker un post 
-// $traitementUnlike = isset($_POST['unlike'], $_POST['postIdtoUnlike']);
-// if ($traitementUnlike) {
-//     $sessionId = $_SESSION['connected_id'];
-//     $postId = $_POST['postIdtoUnlike'];
-
-//     $sessionId = intval($mysqli->real_escape_string($sessionId));
-//     $postId = intval($mysqli->real_escape_string($postId));
-
-//     $sql = "DELETE FROM likes WHERE user_id =" . $sessionId . " AND post_id =" . $postId . ";";
-
-//     $ok = $mysqli->query($sql);
-//     if (!$ok) {
-//         echo "Impossible de déliker ce post :" . $mysqli->error;
-//     }
-// }
 ?>
 
 <article class="p-4">
@@ -79,7 +36,9 @@ echo "<pre>" . print_r($post, 1) . "</pre>";
             ?>
                     <h5>
                         <button class="badge rounded-pill text-bg-success" data-post-id=<?php echo $post['post_id']; ?> data-user-id=<?php echo $sessionId; ?>>
-                            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>"><?php echo $post['like_number'] ?></span></span>
+                            <span>♥ <span class="likes_count<?php echo $post['post_id']; ?>">
+                                    <?php echo $post['like_number'] ?>
+                                </span></span>
                         </button>
                     </h5>
         </small>
