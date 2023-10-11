@@ -25,7 +25,9 @@
         /**
          * Etape 1: Le mur concerne un mot-clé en particulier
          */
-        $tagId = intval($_GET['tag_id']);
+
+        $tagIdDisplay = intval($_GET['tag_id']);
+
         ?>
         <?php
         /**
@@ -39,7 +41,7 @@
             /**
              * Etape 3: récupérer le nom du mot-clé
              */
-            $laQuestionEnSql = "SELECT * FROM `tags` WHERE id= '$tagId' ";
+            $laQuestionEnSql = "SELECT * FROM `tags` WHERE id= '$tagIdDisplay' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $tagChoisi = $lesInformations->fetch_assoc();
 
@@ -52,12 +54,29 @@
             <section>
                 <h3>Présentation des mots-clefs</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
-                <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>
-                <div class="motHashTag">               
-                <a href=""><i> <?php echo $tagList['label'] ?> </i></a>
-                </br>  
-            </div> 
-                <?php };?>
+                <ul class="list-group motHashTag">
+                    <?php while ($tagList = $listeDesTags->fetch_assoc()) {
+                        $tagId = $tagList['id'];
+                        $RequetCountTagSQL = "SELECT COUNT(*) AS tagCount FROM posts_tags WHERE tag_id = $tagId";
+                        $countTagResp = $mysqli->query($RequetCountTagSQL);
+
+                        if ($countTagResp) {
+                            $countTag = $countTagResp->fetch_assoc();
+                            $tagCount = $countTag['tagCount'];
+                        } else {
+                            // Gérer l'erreur ici si nécessaire
+                            $tagCount = 0;
+                        }
+                    ?>
+                        <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                            <a href="tags.php?tag_id=<?php echo $tagId ?>" class="tag-link" data-tag-id="<?php echo $tagId ?>">
+                                <i> <?php echo $tagList['label'] ?> </i>
+                            </a>
+                            <span class="badge bg-primary rounded-pill"><?php echo $tagCount; ?></span>
+                        </li>
+                    <?php }; ?>
+                </ul>
+
                 <!-- <?php echo $tagId ?>) -->
             </section>
         </aside>
@@ -65,7 +84,7 @@
             <article class="container">
                 <div class="row">
                     <div class="col text-start text-capitalize h4">
-                        #<?php echo $tag['label'];
+                        #<?php echo $tagChoisi['label'];
                             ?>
                     </div>
                     <div class="col text-end">
@@ -91,7 +110,7 @@
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
                     LEFT JOIN likes      ON likes.post_id  = posts.id 
-                    WHERE filter.tag_id ='$tagId' 
+                    WHERE filter.tag_id ='$tagIdDisplay' 
                     GROUP BY posts.id
                     ORDER BY posts.created DESC  
                     ";
@@ -115,8 +134,42 @@
             } // cette accolade ferme et termine la boucle while ouverte avant.
             ?>
 
+            <script>
+                $(document).ready(function() {
+                    $('.tag-link').click(function(e) {
+                        e.preventDefault(); // Empêche le comportement de lien normal
+
+                        // Récupère le tagId du lien cliqué
+                        var tagId = $(this).data('tag-id');
+
+                        // Envoie la requête POST
+                        $.ajax({
+                            url: 'script/tagsScript.php', // Remplacez par le chemin de votre script PHP qui traitera la requête POST
+                            type: 'POST',
+                            data: {
+                                tag_id: tagId
+                            },
+                            success: function(response) {
+                                // Traitez la réponse si nécessaire
+                                console.log(response);
+                                // Redirigez l'utilisateur vers la page avec le tag_id
+                                window.location.href = 'tags.php?tag_id=' + tagId;
+                            },
+                            error: function(error) {
+                                console.error(error);
+                            }
+                        });
+                    });
+                });
+            </script>
+
+
+
         </main>
     </div>
 </body>
+
+
+
 
 </html>
