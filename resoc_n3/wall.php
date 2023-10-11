@@ -85,15 +85,18 @@
                             $requeteSql = "SELECT label FROM tags WHERE label = '$match'";
                             $lesInfos = $mysqli->query($requeteSql);
                             if ($lesInfos !== false && $lesInfos->num_rows == 0) {
-                            $lInstructionSqlTag = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";  
-                            $ok = $mysqli->query($lInstructionSqlTag);
-                        }}
+                                $lInstructionSqlTag = "INSERT INTO tags (id, label) VALUES (NULL, '$match')";
+                                $ok = $mysqli->query($lInstructionSqlTag);
+                            }
+                        }
 
-                    // execution
-                    $ok = $mysqli->query($lInstructionSql);
-                    if (!$ok) {
-                        echo "Impossible d'ajouter le message: " . $mysqli->error;
-                    }}}
+                        // execution
+                        $ok = $mysqli->query($lInstructionSql);
+                        if (!$ok) {
+                            echo "Impossible d'ajouter le message: " . $mysqli->error;
+                        }
+                    }
+                }
             ?>
                 <article>
                     <form action="wall.php?user_id=<?php echo $sessionId ?>" method="post">
@@ -132,7 +135,6 @@
             }
 
             while ($post = $lesInformations->fetch_assoc()) {
-
                 include 'post.php';
             } ?>
 
