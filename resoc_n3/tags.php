@@ -47,16 +47,14 @@
             $listeDesTags = $mysqli->query($tagParPost);
 
             //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par le label et effacer la ligne ci-dessous
-            //echo "<pre>" . print_r($tag, 1) . "</pre>";
+            //echo "<pre>" . print_r($tag, 1) . "</pgire>";
             ?>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>Présentation des mots-clefs suivis</h3>
                 <p>Sur cette page vous trouverez les derniers messages comportant les mots-clés suivis.</p>
                 <?php while($tagList = $listeDesTags->fetch_assoc()) { ?>
                 <div class="motHashTag">               
                 <a href=""><i> <?php echo $tagList['label'] ?> </i></a>
-                <button class="badge bg-danger" tag-id="<?php echo $tagId['id']; ?>" data-user-id="<?php echo $_SESSION['connected_id']; ?>">Se désabonner</button>
                 </br>  
             </div> 
                 <?php };?>

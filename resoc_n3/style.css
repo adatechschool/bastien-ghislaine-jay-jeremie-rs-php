@@ -1,6 +1,6 @@
 body{
     /* background-color: #003; */
-    background-image: url("istockphoto-122204403-612x612.jpg");
+    background-image: url("image-from-rawpixel-id-5925774-original.jpg");
     background-size: cover;
     font-family: Arial;
 }
@@ -29,8 +29,13 @@ body>header #menu {
     align-items: stretch;
     border-left: 1px solid #99b;
 }
+h1 {
+    font-family: 'Cairo Play', sans-serif;
+}
+
 body>header #menu h1 {
     text-align: center;
+    padding-top:0.5em;
     flex:4;
 }
 body>header #menu a{
