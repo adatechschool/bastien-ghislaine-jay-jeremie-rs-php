@@ -18,7 +18,9 @@
     </header>
     <div id="wrapper">
         <aside>
-            <img src="user.jpg" alt="Portrait de l'utilisateur / utilisatrice" />
+        <?php
+        include 'userphoto.php';
+        ?>
             <section>
                 <h3 class="fw-bold">Présentation de vos abonnements</h3>
                 <p class="fw-light">Sur cette page vous trouverez la liste des personnes et des mots-clefs dont vous suivez les messages.</p>
@@ -26,6 +28,7 @@
             </section>
         </aside>
         <main class='contacts'>
+            <!-- <p class="categorie">Vos abonnements de personnes :</p> -->
             <?php
             if ($_SESSION['connected_id']) {
                 $userId = intval($_GET['user_id']);
@@ -43,7 +46,23 @@
                 while ($follower = $lesInformations->fetch_assoc()) {
             ?>
                     <article>
-                        <img src="user.jpg" alt="blason" />
+            <?php $followerId = $follower['id'];
+            $photoDuProfil = "SELECT * FROM images WHERE user_id= '$followerId' ";
+            $infoPhoto = $mysqli->query($photoDuProfil);
+            $picture = $infoPhoto->fetch_assoc();
+
+            if ($picture && isset($picture['bin'])) {
+                // Si une image a été trouvée dans la base de données on l'affiche
+                $imageData = base64_encode($picture['bin']);
+                $imageType = $picture['type'];
+            
+                $imageSrc = "data:$imageType;base64,$imageData";
+                echo "<img src='$imageSrc' alt='Portrait de l'utilisateur'>";
+            } else {
+                // Si aucune image n'a été trouvée on affiche une image par défaut
+                echo "<img src='user.jpg' alt='Portrait de l'utilisateur par défaut'>";
+            }
+            ?>
                         <h3 class="fw-bold"><?php echo $follower['alias'] ?></h3>
                         <p class="fw-light">id:<?php echo $follower['id'] ?></p>
                         <footer class="grid gap-0 row-gap-3">

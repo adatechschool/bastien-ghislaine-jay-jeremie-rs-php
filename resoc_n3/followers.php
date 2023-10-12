@@ -18,7 +18,7 @@
     </header>
     <div id="wrapper">
         <aside>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
+            <!-- <img src="user.jpg" alt="Portrait de l'utilisatrice" /> -->
             <section>
                 <h3>Présentation des abonné.e.s</h3>
                 <p>Sur cette page, vous trouverez la liste des personnes qui vous suivent.</p>
@@ -49,7 +49,9 @@
                     while ($follower = $lesInformations->fetch_assoc()) {
             ?>
                         <article>
-                            <img src="user.jpg" alt="blason" />
+        <?php
+        include 'userphoto.php';
+        ?>
                             <h3 class="fs-4"> <a href="wall.php?user_id=<?php echo $follower['id'] ?>"><?php echo $follower['alias']; ?></a></h3>
                             <p>id: <?php echo $follower['id']; ?></p>
                         </article>

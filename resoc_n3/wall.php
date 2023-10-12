@@ -29,14 +29,9 @@
             /**
              * Etape 3: récupérer le nom de l'utilisateur
              */
-            $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
-            $lesInformations = $mysqli->query($laQuestionEnSql);
-            $user = $lesInformations->fetch_assoc();
-
-            $sessionId = $_SESSION['connected_id'];
-
+            
+            include 'userphoto.php';
             ?>
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <?php
                 if ($sessionId == $userId) {

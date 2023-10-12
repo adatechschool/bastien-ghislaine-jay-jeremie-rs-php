@@ -196,3 +196,8 @@ body>header #user:hover ul{
 pre{
     color:#aaa;
 }
+
+.contacts p.categorie {
+    width: 100%;
+    color: #EDFAF9ff;
+}
